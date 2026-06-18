@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+ <head><script src="/_sdk/telemetry_sdk.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindForge</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/editing_sdk.js"></script>
+  <style>
+:root{--primary:#4338CA;--primary-light:#6366F1;--accent:#8B5CF6;--success:#10B981;--bg:#0F0B2E}
+*{font-family:'DM Sans',sans-serif;box-sizing:border-box}
+.view{display:none}.view.active{display:block}
+.glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1)}
+.glass-light{background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.5)}
+.flip-card{perspective:1000px;cursor:pointer}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:1.5rem;display:flex;align-items:center;justify-content:center;padding:2rem}
+.flip-back{transform:rotateY(180deg)}
+.sidebar-btn{transition:all .2s ease}
+.sidebar-btn:hover,.sidebar-btn.active{background:linear-gradient(135deg,#4338CA,#6366F1);color:#fff;box-shadow:0 4px 15px rgba(99,102,241,0.3)}
+.chat-msg{animation:slideIn .3s cubic-bezier(.4,0,.2,1)}
+@keyframes slideIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.fade-up{animation:fadeUp .7s cubic-bezier(.4,0,.2,1) forwards}
+.fade-up-delay{animation:fadeUp .7s .2s cubic-bezier(.4,0,.2,1) forwards;opacity:0}
+.float-anim{animation:float 4s ease-in-out infinite}
+.gradient-text{background:linear-gradient(135deg,#6366F1,#8B5CF6,#EC4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.card-hover{transition:all .3s cubic-bezier(.4,0,.2,1)}
+.card-hover:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,0.08)}
+.glow{box-shadow:0 0 60px rgba(99,102,241,0.15)}
+.mesh-bg{background:radial-gradient(ellipse at 20% 50%,rgba(99,102,241,0.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(139,92,246,0.06) 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,rgba(236,72,153,0.04) 0%,transparent 50%)}
+.hero-gradient{background:linear-gradient(135deg,#EEF2FF 0%,#F5F3FF 30%,#FDF2F8 60%,#EEF2FF 100%)}
+.stat-card{background:linear-gradient(135deg,#ffffff,#F8FAFC);border:1px solid rgba(99,102,241,0.1)}
+.progress-glow{box-shadow:0 0 12px rgba(99,102,241,0.4)}
+</style>
+  <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
+ </head>
+ <body data-template-id="__page-root" class="min-h-screen"><!-- LANDING PAGE -->
+  <div id="view-landing" class="view active"><!-- Nav -->
+   <nav class="flex items-center justify-between px-6 py-4 bg-white/80 backdrop-blur-lg border-b border-gray-100 sticky top-0 z-50">
+    <div class="flex items-center gap-2.5">
+     <div class="w-9 h-9 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200"><span class="text-white font-bold text-sm">M</span>
+     </div><span data-template-id="brand-name" class="canva-text font-bold text-xl"></span>
+    </div>
+    <div class="flex gap-3"><button onclick="showView('dashboard')" data-template-id="nav-login-btn" class="canva-button px-5 py-2.5 text-sm font-medium rounded-xl hover:bg-indigo-50 transition"></button> <button onclick="showView('dashboard')" data-template-id="nav-signup-btn" class="canva-button px-5 py-2.5 text-sm font-medium rounded-xl shadow-lg shadow-indigo-200 hover:shadow-indigo-300 transition"></button>
+    </div>
+   </nav><!-- Hero -->
+   <section class="hero-gradient mesh-bg relative overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+     <div class="absolute -top-40 -right-40 w-96 h-96 bg-purple-200/30 rounded-full blur-3xl"></div>
+     <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-indigo-200/30 rounded-full blur-3xl"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-6 py-24 lg:py-32 grid lg:grid-cols-2 gap-16 items-center relative">
+     <div class="fade-up">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-50 border border-indigo-100 rounded-full mb-6"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> <span class="text-xs font-medium text-indigo-700">Trusted by 50,000+ students</span>
+      </div>
+      <h1 data-template-id="hero-title" class="canva-text leading-tight"></h1>
+      <p data-template-id="hero-subtitle" class="canva-text mt-5 text-lg leading-relaxed"></p>
+      <div class="mt-10 flex gap-4 flex-wrap"><button onclick="showView('upload')" data-template-id="hero-cta" class="canva-button px-7 py-3.5 rounded-xl shadow-xl shadow-indigo-200 hover:shadow-indigo-300 hover:scale-[1.02] transition-all"></button> <button data-template-id="hero-demo-btn" class="canva-button px-7 py-3.5 border-2 border-gray-200 rounded-xl hover:border-indigo-300 hover:bg-white transition-all"></button>
+      </div>
+     </div>
+     <div class="fade-up-delay relative">
+      <div class="absolute inset-0 bg-gradient-to-br from-indigo-400/20 to-purple-400/20 rounded-3xl blur-2xl"></div><img data-template-id="hero-image" class="canva-image w-full rounded-3xl shadow-2xl relative glow" loading="lazy">
+     </div>
+    </div>
+   </section><!-- Features -->
+   <section class="max-w-7xl mx-auto px-6 py-20">
+    <h2 data-template-id="features-heading" class="canva-text text-center mb-4"></h2>
+    <p class="text-center text-gray-500 mb-14 max-w-2xl mx-auto">Powerful AI tools designed to accelerate your learning journey</p>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+     <div data-template-id="feature-1" class="canva-card p-7 rounded-2xl card-hover border border-gray-100">
+      <div class="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center mb-4">
+       <span class="text-2xl">📚</span>
+      </div>
+      <h3 data-template-id="feature-1-title" class="canva-text"></h3>
+      <p data-template-id="feature-1-desc" class="canva-text mt-2 text-sm leading-relaxed"></p>
+     </div>
+     <div data-template-id="feature-2" class="canva-card p-7 rounded-2xl card-hover border border-gray-100">
+      <div class="w-12 h-12 bg-violet-50 rounded-xl flex items-center justify-center mb-4">
+       <span class="text-2xl">📝</span>
+      </div>
+      <h3 data-template-id="feature-2-title" class="canva-text"></h3>
+      <p data-template-id="feature-2-desc" class="canva-text mt-2 text-sm leading-relaxed"></p>
+     </div>
+     <div data-template-id="feature-3" class="canva-card p-7 rounded-2xl card-hover border border-gray-100">
+      <div class="w-12 h-12 bg-pink-50 rounded-xl flex items-center justify-center mb-4">
+       <span class="text-2xl">🎯</span>
+      </div>
+      <h3 data-template-id="feature-3-title" class="canva-text"></h3>
+      <p data-template-id="feature-3-desc" class="canva-text mt-2 text-sm leading-relaxed"></p>
+     </div>
+     <div data-template-id="feature-4" class="canva-card p-7 rounded-2xl card-hover border border-gray-100">
+      <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mb-4">
+       <span class="text-2xl">📊</span>
+      </div>
+      <h3 data-template-id="feature-4-title" class="canva-text"></h3>
+      <p data-template-id="feature-4-desc" class="canva-text mt-2 text-sm leading-relaxed"></p>
+     </div>
+     <div data-template-id="feature-5" class="canva-card p-7 rounded-2xl card-hover border border-gray-100">
+      <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center mb-4">
+       <span class="text-2xl">🤖</span>
+      </div>
+      <h3 data-template-id="feature-5-title" class="canva-text"></h3>
+      <p data-template-id="feature-5-desc" class="canva-text mt-2 text-sm leading-relaxed"></p>
+     </div>
+     <div data-template-id="feature-6" class="canva-card p-7 rounded-2xl card-hover border border-gray-100">
+      <div class="w-12 h-12 bg-rose-50 rounded-xl flex items-center justify-center mb-4">
+       <span class="text-2xl">🏆</span>
+      </div>
+      <h3 data-template-id="feature-6-title" class="canva-text"></h3>
+      <p data-template-id="feature-6-desc" class="canva-text mt-2 text-sm leading-relaxed"></p>
+     </div>
+    </div>
+   </section><!-- Testimonials -->
+   <section class="bg-gradient-to-b from-indigo-50/50 to-white py-20">
+    <div class="max-w-7xl mx-auto px-6">
+     <h2 data-template-id="testimonials-heading" class="canva-text text-center mb-14"></h2>
+     <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-white p-7 rounded-2xl shadow-sm border border-gray-100 card-hover">
+       <div class="flex gap-1 mb-4 text-amber-400">
+        ★★★★★
+       </div>
+       <p data-template-id="testimonial-1-text" class="canva-text leading-relaxed"></p>
+       <div class="flex items-center gap-3 mt-5 pt-5 border-t border-gray-100"><img data-template-id="testimonial-1-avatar" class="canva-image w-11 h-11 rounded-full object-cover ring-2 ring-indigo-100" loading="lazy"> <span data-template-id="testimonial-1-name" class="canva-text text-sm"></span>
+       </div>
+      </div>
+      <div class="bg-white p-7 rounded-2xl shadow-sm border border-gray-100 card-hover">
+       <div class="flex gap-1 mb-4 text-amber-400">
+        ★★★★★
+       </div>
+       <p data-template-id="testimonial-2-text" class="canva-text leading-relaxed"></p>
+       <div class="flex items-center gap-3 mt-5 pt-5 border-t border-gray-100"><img data-template-id="testimonial-2-avatar" class="canva-image w-11 h-11 rounded-full object-cover ring-2 ring-indigo-100" loading="lazy"> <span data-template-id="testimonial-2-name" class="canva-text text-sm"></span>
+       </div>
+      </div>
+      <div class="bg-white p-7 rounded-2xl shadow-sm border border-gray-100 card-hover">
+       <div class="flex gap-1 mb-4 text-amber-400">
+        ★★★★★
+       </div>
+       <p data-template-id="testimonial-3-text" class="canva-text leading-relaxed"></p>
+       <div class="flex items-center gap-3 mt-5 pt-5 border-t border-gray-100"><img data-template-id="testimonial-3-avatar" class="canva-image w-11 h-11 rounded-full object-cover ring-2 ring-indigo-100" loading="lazy"> <span data-template-id="testimonial-3-name" class="canva-text text-sm"></span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Pricing -->
+   <section class="max-w-7xl mx-auto px-6 py-20">
+    <h2 data-template-id="pricing-heading" class="canva-text text-center mb-14"></h2>
+    <div class="grid md:grid-cols-3 gap-8">
+     <div data-template-id="price-free" class="canva-card p-8 rounded-2xl border border-gray-100 card-hover">
+      <h3 data-template-id="price-free-name" class="canva-text"></h3>
+      <p data-template-id="price-free-price" class="canva-text mt-4"></p>
+      <p data-template-id="price-free-desc" class="canva-text mt-3 text-sm"></p><button onclick="showView('dashboard')" data-template-id="price-free-btn" class="canva-button w-full mt-8 py-3.5 border-2 border-indigo-600 rounded-xl font-semibold hover:bg-indigo-50 transition"></button>
+     </div>
+     <div data-template-id="price-pro" class="canva-card p-8 rounded-2xl shadow-2xl relative scale-[1.02] border-2 border-indigo-500"><span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 to-orange-400 text-xs font-bold px-4 py-1.5 rounded-full text-white shadow-lg">MOST POPULAR</span>
+      <h3 data-template-id="price-pro-name" class="canva-text"></h3>
+      <p data-template-id="price-pro-price" class="canva-text mt-4"></p>
+      <p data-template-id="price-pro-desc" class="canva-text mt-3 text-sm"></p><button onclick="showView('dashboard')" data-template-id="price-pro-btn" class="canva-button w-full mt-8 py-3.5 rounded-xl font-semibold shadow-lg shadow-indigo-200 hover:shadow-indigo-300 transition"></button>
+     </div>
+     <div data-template-id="price-ent" class="canva-card p-8 rounded-2xl border border-gray-100 card-hover">
+      <h3 data-template-id="price-ent-name" class="canva-text"></h3>
+      <p data-template-id="price-ent-price" class="canva-text mt-4"></p>
+      <p data-template-id="price-ent-desc" class="canva-text mt-3 text-sm"></p><button onclick="showView('dashboard')" data-template-id="price-ent-btn" class="canva-button w-full mt-8 py-3.5 border-2 border-indigo-600 rounded-xl font-semibold hover:bg-indigo-50 transition"></button>
+     </div>
+    </div>
+   </section>
+   <footer data-template-id="footer-section" class="canva-footer py-14 px-6 text-center">
+    <div class="flex items-center justify-center gap-2.5 mb-4">
+     <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center"><span class="text-white font-bold text-xs">M</span>
+     </div><span class="font-bold text-white/90 text-lg">MindForge</span>
+    </div>
+    <p data-template-id="footer-text" class="canva-text"></p>
+   </footer>
+  </div><!-- APP SHELL -->
+  <div id="app-shell" class="hidden">
+   <div class="flex min-h-screen"><!-- Sidebar -->
+    <aside class="w-72 bg-white border-r border-gray-100 hidden lg:flex flex-col p-5 sticky top-0 h-screen overflow-y-auto">
+     <div class="flex items-center gap-2.5 mb-10">
+      <div class="w-9 h-9 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200"><span class="text-white font-bold text-sm">M</span>
+      </div><span class="font-bold text-gray-900 text-lg">MindForge</span>
+     </div>
+     <nav class="flex flex-col gap-1.5" id="sidebar-nav"><button onclick="showView('dashboard')" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600"><i data-lucide="layout-dashboard" class="w-4 h-4"></i>Dashboard</button> <button onclick="showView('upload')" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600"><i data-lucide="upload" class="w-4 h-4"></i>Upload</button> <button onclick="showView('flashcards')" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600"><i data-lucide="layers" class="w-4 h-4"></i>Flashcards</button> <button onclick="showView('quiz')" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600"><i data-lucide="help-circle" class="w-4 h-4"></i>Quiz Center</button> <button onclick="showView('analytics')" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600"><i data-lucide="bar-chart-2" class="w-4 h-4"></i>Analytics</button> <button onclick="showView('tutor')" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600"><i data-lucide="message-circle" class="w-4 h-4"></i>AI Tutor</button> <button onclick="showView('achievements')" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600"><i data-lucide="trophy" class="w-4 h-4"></i>Achievements</button>
+     </nav>
+     <div class="mt-auto pt-5 border-t border-gray-100"><button onclick="showView('landing')" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 w-full"><i data-lucide="log-out" class="w-4 h-4"></i>Back to Home</button>
+     </div>
+    </aside><!-- Mobile header -->
+    <div class="lg:hidden fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-b border-gray-100 z-50 flex items-center justify-between px-4 py-3">
+     <div class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center"><span class="text-white font-bold text-xs">M</span>
+      </div><span class="font-bold text-gray-900 text-sm">MindForge</span>
+     </div><button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="p-2 hover:bg-gray-100 rounded-lg"><i data-lucide="menu" class="w-5 h-5"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden lg:hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-40" onclick="this.classList.add('hidden')">
+     <div class="bg-white w-72 h-full p-5 flex flex-col gap-1.5 shadow-2xl" onclick="event.stopPropagation()"><button onclick="showView('dashboard');document.getElementById('mobile-menu').classList.add('hidden')" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600"><i data-lucide="layout-dashboard" class="w-4 h-4"></i>Dashboard</button> <button onclick="showView('upload');document.getElementById('mobile-menu').classList.add('hidden')" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600"><i data-lucide="upload" class="w-4 h-4"></i>Upload</button> <button onclick="showView('flashcards');document.getElementById('mobile-menu').classList.add('hidden')" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600"><i data-lucide="layers" class="w-4 h-4"></i>Flashcards</button> <button onclick="showView('quiz');document.getElementById('mobile-menu').classList.add('hidden')" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600"><i data-lucide="help-circle" class="w-4 h-4"></i>Quiz</button> <button onclick="showView('analytics');document.getElementById('mobile-menu').classList.add('hidden')" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600"><i data-lucide="bar-chart-2" class="w-4 h-4"></i>Analytics</button> <button onclick="showView('tutor');document.getElementById('mobile-menu').classList.add('hidden')" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600"><i data-lucide="message-circle" class="w-4 h-4"></i>AI Tutor</button> <button onclick="showView('achievements');document.getElementById('mobile-menu').classList.add('hidden')" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600"><i data-lucide="trophy" class="w-4 h-4"></i>Achievements</button>
+     </div>
+    </div><!-- Main Content -->
+    <main class="flex-1 lg:pt-0 pt-14 overflow-y-auto bg-gray-50/50"><!-- Dashboard -->
+     <div id="view-dashboard" class="view p-6 lg:p-8 max-w-6xl mx-auto">
+      <h1 data-template-id="dash-title" class="canva-text mb-8"></h1>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+       <div class="stat-card p-5 rounded-2xl">
+        <div class="flex items-center gap-3 mb-2">
+         <div class="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center">
+          <i data-lucide="clipboard-check" class="w-5 h-5 text-indigo-600"></i>
+         </div>
+        </div>
+        <p class="text-sm text-gray-500">Quizzes Taken</p>
+        <p id="stat-quizzes" class="text-2xl font-bold text-gray-900 mt-1">0</p>
+       </div>
+       <div class="stat-card p-5 rounded-2xl">
+        <div class="flex items-center gap-3 mb-2">
+         <div class="w-10 h-10 bg-violet-50 rounded-xl flex items-center justify-center">
+          <i data-lucide="target" class="w-5 h-5 text-violet-600"></i>
+         </div>
+        </div>
+        <p class="text-sm text-gray-500">Avg Score</p>
+        <p id="stat-avg" class="text-2xl font-bold text-indigo-600 mt-1">0%</p>
+       </div>
+       <div class="stat-card p-5 rounded-2xl">
+        <div class="flex items-center gap-3 mb-2">
+         <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center">
+          <i data-lucide="flame" class="w-5 h-5 text-emerald-600"></i>
+         </div>
+        </div>
+        <p class="text-sm text-gray-500">Study Streak</p>
+        <p id="stat-streak" class="text-2xl font-bold text-emerald-600 mt-1">🔥 0 days</p>
+       </div>
+       <div class="stat-card p-5 rounded-2xl">
+        <div class="flex items-center gap-3 mb-2">
+         <div class="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center">
+          <i data-lucide="zap" class="w-5 h-5 text-purple-600"></i>
+         </div>
+        </div>
+        <p class="text-sm text-gray-500">XP Earned</p>
+        <p id="stat-xp" class="text-2xl font-bold text-purple-600 mt-1">0 XP</p>
+       </div>
+      </div>
+      <div class="grid lg:grid-cols-2 gap-6">
+       <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+        <h3 class="font-semibold text-gray-900 mb-4">Performance Trend</h3>
+        <canvas id="chart-performance" height="200"></canvas>
+       </div>
+       <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+        <h3 class="font-semibold text-gray-900 mb-4">Recent Activity</h3>
+        <div id="recent-activity" class="space-y-3 text-sm text-gray-600">
+         <p class="text-gray-400 italic">No activity yet. Start a quiz!</p>
+        </div>
+       </div>
+      </div>
+     </div><!-- Upload -->
+     <div id="view-upload" class="view p-6 lg:p-8 max-w-3xl mx-auto">
+      <h1 data-template-id="upload-title" class="canva-text mb-8"></h1>
+      <div class="bg-white rounded-3xl border-2 border-dashed border-indigo-200 p-14 text-center hover:border-indigo-400 transition-all group">
+       <div class="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform"><i data-lucide="upload-cloud" class="w-8 h-8 text-indigo-500"></i>
+       </div>
+       <p class="text-gray-600 font-medium mb-1">Drag &amp; drop PDF or DOCX here</p>
+       <p class="text-xs text-gray-400 mb-5">or</p><label class="inline-flex px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl cursor-pointer hover:opacity-90 text-sm font-medium shadow-lg shadow-indigo-200 transition"> Browse Files <input type="file" class="hidden" accept=".pdf,.docx,.txt"> </label>
+      </div>
+      <div class="mt-8"><label for="topic-input" class="block text-sm font-semibold text-gray-700 mb-3">Or enter a topic</label>
+       <div class="flex gap-3"><input id="topic-input" type="text" placeholder="e.g. Photosynthesis, World War 2, Python basics..." class="flex-1 px-5 py-3.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-gray-50/50 transition"> <button onclick="generateContent()" class="px-7 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:opacity-90 shadow-lg shadow-indigo-200 whitespace-nowrap transition">Generate ✨</button>
+       </div>
+      </div>
+      <div id="upload-result" class="hidden mt-6 bg-emerald-50 border border-emerald-200 rounded-2xl p-5">
+       <p class="text-emerald-800 font-semibold">✓ Content analyzed! Choose what to generate:</p>
+       <div class="flex flex-wrap gap-3 mt-4"><button onclick="showView('flashcards')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium hover:bg-indigo-50 hover:border-indigo-200 transition">📚 Flashcards</button> <button onclick="showView('quiz')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium hover:bg-indigo-50 hover:border-indigo-200 transition">📝 Quiz</button>
+       </div>
+      </div>
+     </div><!-- Flashcards -->
+     <div id="view-flashcards" class="view p-6 lg:p-8 max-w-2xl mx-auto">
+      <h1 data-template-id="flash-title" class="canva-text mb-8"></h1>
+      <div id="flashcard-area">
+       <div class="flip-card mx-auto" style="width:100%;max-width:520px;height:320px" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+         <div class="flip-front bg-white border border-gray-100 shadow-xl rounded-3xl">
+          <p id="flash-front" class="text-xl font-semibold text-gray-900 text-center px-6">Enter a topic to generate flashcards</p>
+         </div>
+         <div class="flip-back bg-gradient-to-br from-indigo-600 to-purple-600 shadow-xl rounded-3xl">
+          <p id="flash-back" class="text-xl font-medium text-white text-center px-6">Answer will appear here</p>
+         </div>
+        </div>
+       </div>
+       <div class="flex items-center justify-center gap-5 mt-8"><button onclick="prevCard()" class="p-3 bg-white border border-gray-200 rounded-full hover:bg-gray-50 shadow-sm transition"><i data-lucide="chevron-left" class="w-5 h-5"></i></button> <span id="flash-counter" class="text-sm font-medium text-gray-500 min-w-[60px] text-center">0 / 0</span> <button onclick="nextCard()" class="p-3 bg-white border border-gray-200 rounded-full hover:bg-gray-50 shadow-sm transition"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+       </div>
+       <div class="flex justify-center mt-5"><button onclick="markDifficult()" class="px-5 py-2.5 bg-red-50 text-red-600 border border-red-200 rounded-xl text-sm font-medium hover:bg-red-100 transition">Mark Difficult</button>
+       </div>
+      </div>
+     </div><!-- Quiz -->
+     <div id="view-quiz" class="view p-6 lg:p-8 max-w-3xl mx-auto">
+      <h1 data-template-id="quiz-title" class="canva-text mb-8"></h1>
+      <div id="quiz-area">
+       <div id="quiz-progress" class="w-full bg-gray-100 rounded-full h-2.5 mb-8 overflow-hidden">
+        <div id="quiz-bar" class="bg-gradient-to-r from-indigo-600 to-purple-600 h-2.5 rounded-full transition-all progress-glow" style="width:0%"></div>
+       </div>
+       <div id="quiz-question" class="bg-white rounded-3xl border border-gray-100 p-10 shadow-sm">
+        <p class="text-gray-400 text-center italic">Generate a quiz from the Upload page to get started.</p>
+       </div>
+       <div id="quiz-score" class="hidden mt-6 bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-200 rounded-2xl p-8 text-center">
+        <p class="text-3xl font-bold text-indigo-700" id="quiz-score-text"></p><button onclick="restartQuiz()" class="mt-5 px-7 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:opacity-90 shadow-lg shadow-indigo-200 transition">Try Again</button>
+       </div>
+      </div>
+     </div><!-- Analytics -->
+     <div id="view-analytics" class="view p-6 lg:p-8 max-w-6xl mx-auto">
+      <h1 data-template-id="analytics-title" class="canva-text mb-8"></h1>
+      <div class="grid lg:grid-cols-2 gap-6 mb-6">
+       <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+        <h3 class="font-semibold mb-4">Score Trends</h3>
+        <canvas id="chart-scores" height="180"></canvas>
+       </div>
+       <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+        <h3 class="font-semibold mb-4">Topic Mastery</h3>
+        <canvas id="chart-mastery" height="180"></canvas>
+       </div>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+       <table class="w-full text-sm">
+        <thead class="bg-gray-50/80">
+         <tr>
+          <th class="text-left p-4 font-semibold text-gray-600">Topic</th>
+          <th class="text-left p-4 font-semibold text-gray-600">Accuracy</th>
+          <th class="text-left p-4 font-semibold text-gray-600">Recommendation</th>
+         </tr>
+        </thead>
+        <tbody id="analytics-table">
+         <tr>
+          <td class="p-4 text-gray-400 italic" colspan="3">Complete quizzes to see analytics</td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </div><!-- AI Tutor -->
+     <div id="view-tutor" class="view p-6 lg:p-8 max-w-3xl mx-auto flex flex-col" style="height:calc(100 * min(var(--vh,1vh),1vh) - 56px)">
+      <h1 data-template-id="tutor-title" class="canva-text mb-5"></h1>
+      <div id="chat-messages" class="flex-1 overflow-y-auto space-y-4 bg-white rounded-2xl border border-gray-100 p-5 mb-4 shadow-sm">
+       <div class="chat-msg flex gap-3">
+        <div class="w-9 h-9 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg shadow-indigo-200"><span class="text-white text-xs font-bold">AI</span>
+        </div>
+        <div class="bg-gray-50 rounded-2xl px-5 py-3.5 max-w-[80%] border border-gray-100">
+         <p class="text-sm text-gray-700 leading-relaxed">Hi! I'm your AI tutor. Ask me anything about your study topics — I can explain concepts, generate examples, or create custom quizzes.</p>
+        </div>
+       </div>
+      </div>
+      <form id="chat-form" class="flex gap-3"><input id="chat-input" type="text" placeholder="Ask anything..." class="flex-1 px-5 py-3.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none bg-gray-50/50"> <button type="submit" class="px-5 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:opacity-90 shadow-lg shadow-indigo-200 transition"><i data-lucide="send" class="w-4 h-4"></i></button>
+      </form>
+     </div><!-- Achievements -->
+     <div id="view-achievements" class="view p-6 lg:p-8 max-w-4xl mx-auto">
+      <h1 data-template-id="achieve-title" class="canva-text mb-2"></h1>
+      <p class="text-gray-500 mb-6">Level <span id="user-level">1</span> · <span id="user-xp">0</span> / 100 XP</p>
+      <div class="w-full bg-gray-100 rounded-full h-3.5 mb-10 overflow-hidden">
+       <div id="xp-bar" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-3.5 rounded-full transition-all" style="width:0%"></div>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5" id="badges-grid">
+       <div class="bg-white p-6 rounded-2xl border border-gray-100 text-center opacity-40 card-hover">
+        <p class="text-4xl mb-3">🏆</p>
+        <p class="font-semibold text-sm">Quiz Master</p>
+        <p class="text-xs text-gray-500 mt-1">Complete 10 quizzes</p>
+       </div>
+       <div class="bg-white p-6 rounded-2xl border border-gray-100 text-center opacity-40 card-hover">
+        <p class="text-4xl mb-3">📚</p>
+        <p class="font-semibold text-sm">Study Streak 7</p>
+        <p class="text-xs text-gray-500 mt-1">7-day streak</p>
+       </div>
+       <div class="bg-white p-6 rounded-2xl border border-gray-100 text-center opacity-40 card-hover">
+        <p class="text-4xl mb-3">🎯</p>
+        <p class="font-semibold text-sm">Perfect Score</p>
+        <p class="text-xs text-gray-500 mt-1">100% on any quiz</p>
+       </div>
+       <div class="bg-white p-6 rounded-2xl border border-gray-100 text-center opacity-40 card-hover">
+        <p class="text-4xl mb-3">🔥</p>
+        <p class="font-semibold text-sm">30-Day Learner</p>
+        <p class="text-xs text-gray-500 mt-1">30-day streak</p>
+       </div>
+       <div class="bg-white p-6 rounded-2xl border border-gray-100 text-center opacity-40 card-hover">
+        <p class="text-4xl mb-3">💡</p>
+        <p class="font-semibold text-sm">First Flashcard</p>
+        <p class="text-xs text-gray-500 mt-1">Generate first set</p>
+       </div>
+       <div class="bg-white p-6 rounded-2xl border border-gray-100 text-center opacity-40 card-hover">
+        <p class="text-4xl mb-3">🚀</p>
+        <p class="font-semibold text-sm">Fast Learner</p>
+        <p class="text-xs text-gray-500 mt-1">Score 80%+ five times</p>
+       </div>
+      </div>
+     </div>
+    </main>
+   </div>
+  </div>
+  <script>
+let currentView='landing',flashcards=[],flashIndex=0,quizQuestions=[],quizIndex=0,quizScore=0,allRecords=[],xp=0,currentTopic='';
+
+const dataHandler={onDataChanged(data){allRecords=data;updateStats()}};
+async function initApp(){const r=await window.dataSdk.init(dataHandler);if(!r.isOk)console.error('SDK init failed')}
+initApp();
+
+function updateStats(){
+  const quizzes=allRecords.filter(r=>r.type==='quiz');
+  const avgScore=quizzes.length?Math.round(quizzes.reduce((a,r)=>a+(r.correct?1:0),0)/quizzes.length*100):0;
+  document.getElementById('stat-quizzes').textContent=quizzes.length;
+  document.getElementById('stat-avg').textContent=avgScore+'%';
+  document.getElementById('stat-xp').textContent=xp+' XP';
+  document.getElementById('user-xp').textContent=xp;
+  document.getElementById('user-level').textContent=Math.floor(xp/100)+1;
+  document.getElementById('xp-bar').style.width=(xp%100)+'%';
+  drawCharts();
+}
+
+function showView(view){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  const isApp=view!=='landing';
+  document.getElementById('view-landing').style.display=isApp?'none':'';
+  document.getElementById('app-shell').classList.toggle('hidden',!isApp);
+  if(view==='landing'){document.getElementById('view-landing').classList.add('active')}
+  else{const el=document.getElementById('view-'+view);if(el)el.classList.add('active')}
+  document.querySelectorAll('#sidebar-nav .sidebar-btn').forEach(b=>b.classList.remove('active'));
+  if(view==='analytics')drawCharts();
+  currentView=view;
+  lucide.createIcons();
+}
+
+const sampleContent={
+  'Photosynthesis':{
+    flashcards:[{q:'What is photosynthesis?',a:'The process by which plants convert light energy into chemical energy (glucose)'},{q:'Where does photosynthesis occur?',a:'In the chloroplasts, specifically in the thylakoid membranes and stroma'},{q:'What is the equation for photosynthesis?',a:'6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂'},{q:'What pigment absorbs light?',a:'Chlorophyll (primarily chlorophyll a and b)'},{q:'What are the two stages?',a:'Light-dependent reactions and the Calvin cycle (light-independent)'}],
+    quiz:[{q:'Which organelle performs photosynthesis?',opts:['Mitochondria','Chloroplast','Nucleus','Ribosome'],ans:1},{q:'What is the primary pigment?',opts:['Carotenoid','Xanthophyll','Chlorophyll','Anthocyanin'],ans:2},{q:'What gas is released?',opts:['CO₂','N₂','O₂','H₂'],ans:2},{q:'The Calvin cycle is also called?',opts:['Light reactions','Dark reactions','Krebs cycle','Glycolysis'],ans:1}]
+  }
+};
+
+function getContent(topic){
+  if(sampleContent[topic])return sampleContent[topic];
+  return{
+    flashcards:[{q:`What is ${topic}?`,a:`${topic} is a fundamental concept in its field.`},{q:`Why is ${topic} important?`,a:`It forms the basis for understanding related concepts.`},{q:`Key principle of ${topic}?`,a:`The main principle involves systematic study and application.`},{q:`Who contributed to ${topic}?`,a:`Many researchers have advanced our understanding over centuries.`}],
+    quiz:[{q:`${topic} is primarily studied in which field?`,opts:['Science','Arts','Mathematics','All of the above'],ans:3},{q:`What is a key concept in ${topic}?`,opts:['Analysis','Synthesis','Application','All of these'],ans:3},{q:`${topic} was first formalized in which century?`,opts:['17th','18th','19th','20th'],ans:2}]
+  };
+}
+
+function generateContent(){
+  const topic=document.getElementById('topic-input').value.trim();
+  if(!topic)return;
+  currentTopic=topic;
+  document.getElementById('upload-result').classList.remove('hidden');
+  const content=getContent(topic);
+  flashcards=content.flashcards;quizQuestions=content.quiz;
+  flashIndex=0;quizIndex=0;quizScore=0;
+  updateFlashcard();renderQuiz();xp+=10;updateStats();
+}
+
+function updateFlashcard(){
+  if(!flashcards.length)return;
+  const card=flashcards[flashIndex];
+  document.getElementById('flash-front').textContent=card.q;
+  document.getElementById('flash-back').textContent=card.a;
+  document.getElementById('flash-counter').textContent=`${flashIndex+1} / ${flashcards.length}`;
+  document.querySelector('.flip-card').classList.remove('flipped');
+}
+function nextCard(){if(flashcards.length){flashIndex=(flashIndex+1)%flashcards.length;updateFlashcard()}}
+function prevCard(){if(flashcards.length){flashIndex=(flashIndex-1+flashcards.length)%flashcards.length;updateFlashcard()}}
+function markDifficult(){if(flashcards.length)flashcards[flashIndex].difficult=true}
+
+function renderQuiz(){
+  if(!quizQuestions.length)return;
+  const q=quizQuestions[quizIndex];
+  document.getElementById('quiz-bar').style.width=((quizIndex)/quizQuestions.length*100)+'%';
+  document.getElementById('quiz-score').classList.add('hidden');
+  let html=`<p class="text-sm text-indigo-600 font-medium mb-2">Question ${quizIndex+1} of ${quizQuestions.length}</p><p class="text-xl font-semibold text-gray-900 mb-8">${q.q}</p><div class="space-y-3">`;
+  q.opts.forEach((opt,i)=>{
+    html+=`<button onclick="answerQuiz(${i})" class="w-full text-left px-5 py-4 border border-gray-200 rounded-xl hover:bg-indigo-50 hover:border-indigo-300 transition text-sm font-medium">${opt}</button>`;
+  });
+  html+='</div>';
+  document.getElementById('quiz-question').innerHTML=html;
+}
+
+async function answerQuiz(idx){
+  const q=quizQuestions[quizIndex];const correct=idx===q.ans;
+  if(correct){quizScore++;xp+=5}
+  if(allRecords.length<999){
+    await window.dataSdk.create({type:'quiz',topic:currentTopic||'General',question:q.q,answer:q.opts[q.ans],user_answer:q.opts[idx],correct,difficulty:'intermediate',score:correct?100:0,created_at:new Date().toISOString()});
+  }
+  const btns=document.getElementById('quiz-question').querySelectorAll('button');
+  btns.forEach((b,i)=>{
+    b.disabled=true;
+    if(i===q.ans)b.classList.add('bg-emerald-50','border-emerald-400','text-emerald-700');
+    else if(i===idx&&!correct)b.classList.add('bg-red-50','border-red-400','text-red-700');
+  });
+  setTimeout(()=>{
+    quizIndex++;
+    if(quizIndex<quizQuestions.length){renderQuiz()}
+    else{
+      document.getElementById('quiz-bar').style.width='100%';
+      const pct=Math.round(quizScore/quizQuestions.length*100);
+      document.getElementById('quiz-score-text').textContent=`🎉 You scored ${pct}% (${quizScore}/${quizQuestions.length})`;
+      document.getElementById('quiz-score').classList.remove('hidden');
+      document.getElementById('quiz-question').innerHTML='';
+      xp+=20;updateStats();
+    }
+  },800);
+}
+function restartQuiz(){quizIndex=0;quizScore=0;renderQuiz()}
+
+document.getElementById('chat-form').addEventListener('submit',function(e){
+  e.preventDefault();
+  const input=document.getElementById('chat-input');const msg=input.value.trim();if(!msg)return;input.value='';
+  const container=document.getElementById('chat-messages');
+  container.innerHTML+=`<div class="chat-msg flex gap-3 justify-end"><div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl px-5 py-3.5 max-w-[80%] shadow-sm"><p class="text-sm">${msg}</p></div></div>`;
+  setTimeout(()=>{
+    const responses=[
+      `Great question! Let me explain: ${msg.includes('photosynthesis')?'Photosynthesis is how plants make food using sunlight. Think of leaves as tiny solar panels that convert light into sugar!':'This is a fascinating topic. The key concept here involves understanding the fundamentals and building upon them step by step.'}`,
+      `Here's a simple way to think about it: break the concept down into smaller parts and master each one before moving to the next.`,
+      `I'd recommend creating flashcards for this topic and reviewing them daily using spaced repetition.`
+    ];
+    const resp=responses[Math.floor(Math.random()*responses.length)];
+    container.innerHTML+=`<div class="chat-msg flex gap-3"><div class="w-9 h-9 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg shadow-indigo-200"><span class="text-white text-xs font-bold">AI</span></div><div class="bg-gray-50 rounded-2xl px-5 py-3.5 max-w-[80%] border border-gray-100"><p class="text-sm text-gray-700 leading-relaxed">${resp}</p></div></div>`;
+    container.scrollTop=container.scrollHeight;xp+=2;updateStats();
+  },1000);
+  container.scrollTop=container.scrollHeight;
+});
+
+function drawCharts(){drawLine('chart-performance');drawLine('chart-scores');drawBar('chart-mastery')}
+function drawLine(id){
+  const c=document.getElementById(id);if(!c)return;
+  const ctx=c.getContext('2d');c.width=c.offsetWidth;c.height=180;ctx.clearRect(0,0,c.width,c.height);
+  const data=allRecords.length?allRecords.slice(-10).map(r=>r.correct?100:30):[65,70,55,80,75,90,85,88];
+  const step=c.width/(data.length-1);
+  const gradient=ctx.createLinearGradient(0,0,c.width,0);gradient.addColorStop(0,'#4338CA');gradient.addColorStop(1,'#8B5CF6');
+  ctx.beginPath();ctx.strokeStyle=gradient;ctx.lineWidth=3;ctx.lineCap='round';ctx.lineJoin='round';
+  data.forEach((v,i)=>{const x=i*step;const y=c.height-(v/100*(c.height-20))-10;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)});
+  ctx.stroke();
+  ctx.lineTo((data.length-1)*step,c.height);ctx.lineTo(0,c.height);ctx.closePath();
+  const fill=ctx.createLinearGradient(0,0,0,c.height);fill.addColorStop(0,'rgba(99,102,241,0.12)');fill.addColorStop(1,'rgba(99,102,241,0)');
+  ctx.fillStyle=fill;ctx.fill();
+}
+function drawBar(id){
+  const c=document.getElementById(id);if(!c)return;
+  const ctx=c.getContext('2d');c.width=c.offsetWidth;c.height=180;ctx.clearRect(0,0,c.width,c.height);
+  const topics=['Bio','Chem','Physics','Math','History'];const vals=[72,58,45,85,63];
+  const bw=c.width/topics.length-20;
+  topics.forEach((t,i)=>{
+    const x=i*(bw+20)+10;const h=vals[i]/100*(c.height-30);
+    const g=ctx.createLinearGradient(x,c.height-h-20,x,c.height-20);
+    g.addColorStop(0,vals[i]>70?'#10B981':vals[i]>50?'#F59E0B':'#EF4444');
+    g.addColorStop(1,vals[i]>70?'#059669':vals[i]>50?'#D97706':'#DC2626');
+    ctx.fillStyle=g;
+    ctx.beginPath();ctx.roundRect(x,c.height-h-20,bw,h,6);ctx.fill();
+    ctx.fillStyle='#6B7280';ctx.font='11px DM Sans';ctx.fillText(t,x+bw/2-12,c.height-5);
+  });
+}
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a0dbb844e1ffb108',t:'MTc4MTgwMDY1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
